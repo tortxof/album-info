@@ -13,11 +13,11 @@ def get_info(url):
     num_tracks = (len(soup.select("table.display.table_lyrics tr")) - 1) // 2
     album = soup.select("h1.album_name a")[0].text.strip()
     artist = soup.select("h2.band_name a")[0].text.strip()
-    titles = []
+    tracks = []
     for i in range(num_tracks):
-        title = soup.select("table.display.table_lyrics tr")[i * 2].select("td")[1].text.strip()
-        titles.append(title)
-    return {'album': album, 'artist': artist, 'titles': titles}
+        track = soup.select("table.display.table_lyrics tr")[i * 2].select("td")[1].text.strip()
+        tracks.append(track)
+    return {'album': album, 'artist': artist, 'tracks': tracks}
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
