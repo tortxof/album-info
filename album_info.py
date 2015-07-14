@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 def get_info(url):
     '''Returns dict of album info given url of album on metal-archives.com.'''
     r = requests.get(url)
-    soup = BeautifulSoup(r.text)
+    soup = BeautifulSoup(r.text, 'html.parser')
     num_tracks = (len(soup.select("table.display.table_lyrics tr")) - 1) // 2
     album = soup.select("h1.album_name a")[0].text.strip()
     artist = soup.select("h2.band_name a")[0].text.strip()
