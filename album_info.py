@@ -6,16 +6,22 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
+def song_rows(tag):
+    if tag.get('class'):
+        return tag.get('class')[0] in ['even', 'odd']
+    else:
+        return False
+
 def get_info(url):
     '''Returns dict of album info given url of album on metal-archives.com.'''
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    num_tracks = (len(soup.select("table.display.table_lyrics tr")) - 1) // 2
+    rows = soup.find_all(song_rows)
     album = soup.select("h1.album_name a")[0].text.strip()
     artist = soup.select("h2.band_name a")[0].text.strip()
     tracks = []
-    for i in range(num_tracks):
-        track = soup.select("table.display.table_lyrics tr")[i * 2].select("td")[1].text.strip()
+    for i in rows:
+        track = i.select("td")[1].text.strip()
         tracks.append(track)
     return {'album': album, 'artist': artist, 'tracks': tracks}
 
