@@ -15,6 +15,7 @@ def song_rows(tag):
 def get_info(url):
     '''Returns dict of album info given url of album on metal-archives.com.'''
     r = requests.get(url)
+    r.encoding = 'utf-8'
     soup = BeautifulSoup(r.text, 'html.parser')
     rows = soup.select("table.display.table_lyrics")[0].find_all(song_rows)
     album = soup.select("h1.album_name a")[0].text.strip()
